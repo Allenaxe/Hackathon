@@ -28,7 +28,7 @@
       methods: {
         onSubmitGet() {
           console.log('submit! get');
-            axios.get('http://127.0.0.1:8000/users/', this.formInline).then(res => {
+            axios.get('http://127.0.0.1:8000/courses/recommend_course', this.formInline).then(res => {
             this.results = JSON.stringify(res.data);
             console.log(res.data);
           }).catch(() => {
