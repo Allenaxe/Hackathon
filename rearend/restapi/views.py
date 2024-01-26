@@ -10,6 +10,7 @@ import vertexai
 from vertexai.preview.language_models import TextGenerationModel
 import pandas as pd
 import re
+import random
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -42,7 +43,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     
 
 
-    ### 學習路徑 推薦課程
+    ### 學習路徑 推薦課程(用在搜尋框)
     @action(methods=['get'], detail=False)
     def recommend_course(self,_):
         def predict_large_language_model(
@@ -67,32 +68,33 @@ class CourseViewSet(viewsets.ModelViewSet):
             return response.text
 
 
-        #TODO 先讀個10筆 (上線之後要改)
-        cnt = 0
+        #先從DB讀全部，再sample 70個 (不能一次讀太多筆 input會爆,試試看random sampling)
         data_list = []
         for item in self.queryset:
-            if cnt >= 10:
-                break
-            cnt += 1
             row = {
                 "Course Name": item.CourceName,
                 "University": item.University,
                 "Difficulty Level": item.DifficultyLevel,
-                "Course Rating": item.CourseRating,
-                "Course Description": item.CourseDescription
+                "Course Rating": item.CourseRating
             }
             data_list.append(row)
         data = pd.DataFrame(data_list)
-        # return Response(data)
+        # return Response(data) 
         # return Response(data.to_markdown(index=False))
+        
+        sampled_courses = data.sample(n=70,random_state=45)
+        
+        # return Response(sampled_courses.to_dict(orient="records"))
+        sampled_data_json = sampled_courses.to_json(orient='records')
+        # return Response(sampled_data_json)
+        # data_markdown = data.to_markdown(index=False)
 
-        data_markdown = data.to_markdown(index=False)
         preference = input("請問您對於哪些類型的課程感興趣(只需列領域名稱):")
         task = "Please recommend user 7 courses in our course data according to user's course preference. Reply 'Course name','DifficultyLevel',and 'CourseRating' of recommend courses"
 
         prompt = f'''
         input: This table contains information about courses. The first row includes the table headers, while each subsequent row displays the corresponding data separated by the "|" symbol.
-        {data_markdown}
+        {sampled_data_json}
 
         User's preference: {preference}
 
@@ -180,3 +182,98 @@ class CourseViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
     
    
+    ### 學習歷史紀錄(show)
+    @action(methods=['get'], detail=False)
+    def show_user_learing_record(self,_):
+        pass
+
+
+    ### 學習歷程(上次學習的是哪堂課)(history list中的最後一筆)
+    @action(methods=['get'], detail=False)
+    def show_user_last_learning_record(self,_):
+        pass
+    
+
+
+    ### 學習成果/獎勵  (更新和show) -> 給前端用
+    # @action(methods=['get'], detail=False)
+    # def update_user_exp(self,_):
+    #     pass
+
+    # @action(methods=['get'], detail=False)
+    # def show_user_exp(self,_):
+    #     pass
+
+
+
+    ### 類似背景的人也在學習什麼?(你可能感興趣的課程)
+    @action(methods=['get'], detail=False)
+    def recommend_courses_by_related_deparment(self,_):
+        def predict_large_language_model(
+            model_name: str,
+            temperature: float,
+            max_output_tokens: int,
+            top_p: float,
+            top_k: int,
+            content: str,
+            tuned_model_name: str = "",
+            ) :
+            
+            model = TextGenerationModel.from_pretrained(model_name)
+            if tuned_model_name:
+                model = model.get_tuned_model(tuned_model_name)
+            response = model.predict(
+                content,
+                temperature=temperature,
+                max_output_tokens=max_output_tokens,
+                top_k=top_k,
+                top_p=top_p,)
+            return response.text
+
+
+        #先從DB讀全部，再sample 70個 (不能一次讀太多筆 input會爆,試試看random sampling)
+        data_list = []
+        for item in self.queryset:
+            row = {
+                "Course Name": item.CourceName,
+                "University": item.University,
+                "Difficulty Level": item.DifficultyLevel,
+                "Course Rating": item.CourseRating
+            }
+            data_list.append(row)
+        data = pd.DataFrame(data_list)
+        # return Response(data) 
+        # return Response(data.to_markdown(index=False))
+        
+        sampled_courses = data.sample(n=70,random_state=35)
+        
+        # return Response(sampled_courses.to_dict(orient="records"))
+        sampled_data_json = sampled_courses.to_json(orient='records')
+        # return Response(sampled_data_json)
+    
+
+        #TODO 改成從user的科系去讀(不寫死)
+        department = "Economic"
+        task = "Please recommend user 5 courses in our course data related to user's department. Reply 'Course name','DifficultyLevel',and 'CourseRating' of recommend courses"
+
+        prompt = f'''
+        input: This table contains information about courses. The first row includes the table headers, while each subsequent row displays the corresponding data separated by the "|" symbol.
+        {sampled_data_json}
+
+        User's deparment: {department}
+
+        Task: {task}
+        '''
+
+        response_text = predict_large_language_model(
+            "text-bison@001", 
+            temperature=0.2, 
+            max_output_tokens=256, 
+            top_p=0.8, 
+            top_k=1, 
+            content=prompt)
+        # print(response_text)
+        return Response(response_text)
+
+    
+    

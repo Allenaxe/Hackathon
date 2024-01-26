@@ -73,7 +73,7 @@ export default {
     },
     onSubmitGet() {
       console.log('submit! get');
-      axios.get('http://127.0.0.1:8000/users/', this.formInline)
+      axios.get('http://127.0.0.1:8000/courses/recommend_courses_by_related_deparment', this.formInline)
         .then(res => {
           this.results = JSON.stringify(res.data);
           console.log(res.data);
