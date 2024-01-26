@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group, User
+from restapi.models import Cource
 from rest_framework import serializers
 
 
@@ -12,3 +13,8 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'name']
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cource
+        fields = ['id', 'CourceName', 'University', 'DifficultyLevel', 'CourseRating', 'CourseDescription']
