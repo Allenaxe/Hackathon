@@ -1,5 +1,5 @@
 from django.contrib.auth.models import Group, User
-from restapi.models import Cource
+from restapi.models import Course
 from rest_framework import permissions, viewsets
 
 from restapi.serializers import GroupSerializer, UserSerializer, CourseSerializer
@@ -30,6 +30,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Cource.objects.all()
+    queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [permissions.AllowAny]

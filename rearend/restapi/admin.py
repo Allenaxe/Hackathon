@@ -1,6 +1,7 @@
 from django.contrib import admin
-from restapi.models import Cource
+from restapi.models import Course, Student
 
-admin.site.register(Cource)
+admin.site.register(Course)
+admin.site.register(Student)
 
 # Register your models here.
