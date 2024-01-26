@@ -23,6 +23,7 @@ from restapi import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet, basename = 'user')
 router.register(r'groups', views.GroupViewSet)
+router.register(r'courses', views.CourseViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
