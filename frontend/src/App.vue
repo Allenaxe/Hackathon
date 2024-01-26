@@ -1,15 +1,16 @@
 <template>
   <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <TestApi/>
+  <UserLogin/>
 </template>
 
 <script>
-import TestApi from './components/TestApi.vue'
+// import TestApi from './components/TestApi.vue'
+import UserLogin from './components/LoGin.vue' // Renamed from 'Login' to 'UserLogin'
 
 export default {
   name: 'App',
   components: {
-    TestApi
+    UserLogin, // Updated component name
   }
 }
 </script>
