@@ -10,11 +10,11 @@ class Course(models.Model):
 
 class Student(models.Model):
   UserName = models.OneToOneField(User, on_delete = models.CASCADE)
-  Photo = models.ImageField()
+  Photo = models.ImageField(default = '')
   University = models.CharField(max_length = 100)
-  Age = models.IntegerField()
-  Skill = models.TextField()
+  Age = models.IntegerField(default = 0)
+  Skill = models.TextField(default = '')
   Learned = models.TextField(default = '')
-  Score = models.IntegerField()
+  Score = models.IntegerField(default = 0)
 
 # Create your models here.

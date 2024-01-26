@@ -11,29 +11,29 @@
         <input type="file" id="choose-file" @change="previewImage" accept="image/*" />
         <div class="form-group">
           <label for="name">Username</label>
-          <el-input class="input"  id="name" v-model="formInline.username" placeholder="User name"></el-input>
+          <el-input class="input"  id="name" v-model="formInline.UserName" placeholder="User name"></el-input>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <el-input class="input" id="email" v-model="formInline.email" placeholder="Email"></el-input>
+          <el-input class="input" id="email" v-model="formInline.Email" placeholder="Email"></el-input>
         </div>
         <div class="form-group">
           <label for="age">Age</label>
-          <el-input class="input"  id="age" v-model="formInline.age" placeholder="Age"></el-input>
+          <el-input class="input"  id="age" v-model="formInline.Age" placeholder="Age"></el-input>
         </div>
         <div class="form-group">
           <label for="department">Department</label>
-          <el-input class="input" id= "department" v-model="formInline.department" placeholder="Department"></el-input>
+          <el-input class="input" id= "department" v-model="formInline.Department" placeholder="Department"></el-input>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id ="password" v-model="formInline.password" placeholder="Password" required @input="validatePassword">
+          <input type="password" id ="password" v-model="formInline.Password" placeholder="Password" required @input="validatePassword">
           <ul class="password-requirements">
             <li v-if="!passwordValidation.minLength">Least 6 characters</li>
             <li v-if="!passwordValidation.numberOrSymbol">Least one number (0-9) or a symbol</li>
           </ul>
         </div>
-        <el-button type="primary" native-type="submit">Sign Up</el-button>
+        <el-button type="primary" native-type="submit" @click="onSubmitPost">Sign Up</el-button>
       </form>
       <!-- <el-form-item>
         <el-button type="primary" @click="onSubmitGet">Get Query All</el-button>
@@ -50,42 +50,31 @@ export default {
   data() {
     return {
       formInline: {
-        username: '',
-        email: '',
-        age: '',
-        department: '',
-        password: '',
+        Photo: null,
+        UserName: '',
+        Email: '',
+        Age: 0,
+        Department: '',
+        Password: ''
       },
       passwordValidation: {
         minLength: true,
         numberOrSymbol: true,
       },
       results: '',
-      imageData: null, // make sure you have imageData defined if you're using previewImage method
+      imageData: null // make sure you have imageData defined if you're using previewImage method
     };
   },
   methods: {
     validatePassword() {
       // Directly reference the password from formInline
-      const password = this.formInline.password;
+      const password = this.formInline.Password;
       this.passwordValidation.minLength = password.length >= 6;
       this.passwordValidation.numberOrSymbol = /[0-9]|[\W_]/.test(password);
     },
-    onSubmitGet() {
-      console.log('submit! get');
-      axios.get('http://127.0.0.1:8000/users/', this.formInline)
-        .then(res => {
-          this.results = JSON.stringify(res.data);
-          console.log(res.data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('An error occurred');
-        });
-    },
     onSubmitPost() {
-      console.log('submit! post');
-      axios.post('http://127.0.0.1:8000/users/', this.formInline)
+      console.log(this.formInline);
+      axios.post('http://127.0.0.1:8000/students/', this.formInline)
         .then(res => {
           this.results = JSON.stringify(res.data);
           console.log(res.data);
@@ -104,6 +93,7 @@ export default {
         const reader = new FileReader();
         reader.onload = e => {
           this.imageData = e.target.result;
+          this.formInline.Photo = e.target.result;
         };
         reader.readAsDataURL(file);
       }
