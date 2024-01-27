@@ -1,6 +1,5 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-// import TestApi from './components/TestApi.vue';
+import { createApp } from 'vue';
+import App from './App.vue';
 import ElementUI from 'element-plus';
 import Route from './router';
 import 'element-plus/dist/index.css';
