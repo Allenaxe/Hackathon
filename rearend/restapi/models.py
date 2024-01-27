@@ -10,7 +10,7 @@ class Course(models.Model):
 
 class Student(models.Model):
   UserName = models.OneToOneField(User, on_delete = models.CASCADE)
-  Photo = models.ImageField(default = '')
+  Photo = models.ImageField(upload_to = "")
   University = models.CharField(max_length = 100)
   Age = models.IntegerField(default = 0)
   Skill = models.TextField(default = '')

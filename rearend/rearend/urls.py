@@ -29,6 +29,7 @@ router.register(r'courses', views.CourseViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('accounts/login/', views.login),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
