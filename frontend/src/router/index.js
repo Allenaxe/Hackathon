@@ -15,11 +15,31 @@ const routes = [
     path: '/panel',
     name: 'panel',
     component: () => import('@/components/PanelApi')
+  },
+  {
+    path: '/achievement',
+    name: 'achievement',
+    component: () => import('@/components/NewApi')
+  },
+  {
+    path: '/path',
+    name: 'path',
+    component: () => import('@/components/LearnPath')
+  },
+  {
+    path: '/course',
+    name: 'course',
+    component: () => import('@/components/LearnCourse')
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: () => import('@/components/LearnedRecord')
   }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory('/login'),
+  history: createWebHashHistory('/'),
   routes
 })
 

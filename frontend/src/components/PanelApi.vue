@@ -1,82 +1,15 @@
-<!--
-<template>
-  <el-form :inline="true" :model="formInline" size="small" >
-    <el-form-item label="用户信息555">
-      <el-input class="input" v-model="formInline.username" placeholder="用户名"></el-input>
-      <el-input class="input" v-model="formInline.email" placeholder="email"></el-input>
-    </el-form-item>
-   <el-form-item>
-      <el-button type="primary" @click="onSubmitGet">get 查询所有</el-button>
-      <el-button type="primary" @click="onSubmitPost">post 提交</el-button>
-    </el-form-item>
-   <el-input type="textarea" :rows="6" placeholder="此处返回结果" v-model="results" class="textarea"> </el-input>
-  </el-form>
-  
-  
-  </template>
-  <script>
-    import axios from 'axios'
-    export default {
-      data() {
-        return {
-          formInline: {
-            username: '',
-            email: '',
-          },
-          results:''
-        }
-      },
-      methods: {
-        onSubmitGet() {
-          console.log('submit! get');
-            axios.get('http://127.0.0.1:8000/users/', this.formInline).then(res => {
-            this.results = JSON.stringify(res.data);
-            console.log(res.data);
-          }).catch(() => {
-            alert('wrong');
-          })
-  
-  
-        },
-        onSubmitPost() {
-          console.log('submit! post');
-            axios.post('http://127.0.0.1:8000/users/', this.formInline).then(res => {
-            console.log(res.data);
-          }).catch(() => {
-            alert('wrong');
-          })
-  
-        }
-      }
-    }
-
-</script>
-  <style scoped>
-  .input {
-    width: 200px
-  }
-  button {
-    width: 100px
-  }
-  .textarea {
-    width: 900px
-  }
-</style>
--->
 <template>
   <header>
-      <h1 id="WebsiteName">Course recommendation</h1>
-      <nav class="header_nav">
-          <a href="https://www.google.com.tw/" class="linkText">HOME</a>
-          <a href="/path.vue" class="linkText">LEARNING PATH</a>
-          <a href="" class="linkText">LEARNING COURSE</a>
-          <a href="" class="linkText">LEARNING HISTORY</a>
-          <a href="" class="linkText">LEARNING ACHIEVEMENT</a>
-      </nav>
-
+    <h1 id="WebsiteName">Course recommendation</h1>
+    <nav class="header_nav">
+      <a href="https://www.google.com.tw/" class="linkText">HOME</a>
+      <router-link to="/path"><a>LEARNING PATH</a></router-link>
+      <router-link to="/course"><a>LEARNING COURSE</a></router-link>
+      <router-link to="/history"><a>LEARNING HISTORY</a></router-link>
+      <router-link to="/achievement"><a>LEARNING ACHIEVEMENT</a></router-link>
+    </nav>
   </header>
   <main>
-    
     <section id="photo_name"> 
       <div>
         <div class="hello">
@@ -89,7 +22,7 @@
         <table>
         <tr>
           <td>Email</td>
-          <td>{{formInline.mail}}</td>
+          <td :class="getemail()">{{formInline.mail}}</td>
         </tr>
         <tr>
           <td>department</td>
@@ -105,38 +38,15 @@
         </tr>
         </table>
       </div>
-      
     </section>
-  
     <section id="class">
       <h3 id="title">The record of learning</h3>
       <ol>
         <li id="classList" v-for="Lclass in formInline.learned_class" :key="Lclass">{{ Lclass }}</li>
       </ol>
-    <!--
-      <form id="Inform" >
-        <label for="email">email</label>
-        <input id="email" type="text" v-model="email" />
-      </form>
-      <button id="btn">Save</button>
-    
-      
-      <el-form id="Inform" :inline="true" :model="formInline" size="small"  >
-        <el-form-item label="Please input">
-          <el-input class="input" v-model="formInline.Information" placeholder="Information"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmitPost">post 提交</el-button>
-        </el-form-item>
-        <el-input type="textarea" :rows="10" placeholder="此处返回结果" v-model="results" class="textarea"> </el-input>
-      </el-form>
-    -->
     </section>
-    
   </main>
-  
   <footer>
-
   </footer>
 </template>
 
@@ -145,36 +55,47 @@ import axios from 'axios';
 
 export default {
   data() {
-        return {
-          formInline: {
-            Information: '',
-            mail:"XXXXXXXXXX@gmail.com",
-            name:"Andy",
-            dep:"Math",
-            age:"21",
-            skills: ["Eating", "Coding", "Sleeping", "Reading", "Computing", "drinking", "Eating", "Coding", "Sleeping", "Reading", "Computing", "drinking"],
-            learned_class: ["first class", "second class", "third class", "first class", "second class", "third class", "first class", "second class", "third class"]
-          },
-          results:''
-        }
+    return {
+      formInline: {
+        Information: '',
+        mail:"XXXXXXXXXX@gmail.com",
+        name:"Andy",
+        dep:"Math",
+        age:"21",
+        skills: ["Eating", "Coding", "Sleeping", "Reading", "Computing", "drinking", "Eating", "Coding", "Sleeping", "Reading", "Computing", "drinking"],
+        learned_class: ["first class", "second class", "third class", "first class", "second class", "third class", "first class", "second class", "third class"]
       },
-      methods: {
-        getPhoto() {
-          axios.get('http://127.0.0.1:8000/students/printUser/', this.formInline)
-          .then(res => {
-            this.results = JSON.stringify(res.data);
-            if (res.data == 'failed')
-              alert('Invalid Username or Password');
-            console.log(res.data);
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred');
-          });
-          this.results = '\'' + this.results + '\''
-          return this.results;
-        }
-      }
+      results:''
+    }
+  },
+  methods: {
+    getPhoto() {
+      axios.get('http://127.0.0.1:8000/students/printUser/', this.formInline)
+      .then(res => {
+        this.results = JSON.stringify(res.data);
+        if (res.data == 'failed')
+          alert('Invalid Username or Password');
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+      });
+      this.results = '\'' + this.results + '\''
+      return this.results;
+    },
+    
+    async getemail() {
+      await axios.get('http://127.0.0.1:8000/students/getemail')
+      .then(res => {
+        this.formInline.mail = res.data;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+      });
+    }
+  }
 }
 </script>
 
@@ -269,17 +190,6 @@ a {
   background-color:  #FFB500;
   margin: 0;
 }
-/*
-.input {
-  width: 300px;
-}
-button {
-  width: 100px
-}
-.textarea {
-  width: 900px
-}
-*/
 #Inform {
   padding-top: 10px;
 }

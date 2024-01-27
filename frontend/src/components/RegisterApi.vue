@@ -26,6 +26,21 @@
           <el-input class="input" id= "department" v-model="formInline.Department" placeholder="Department"></el-input>
         </div>
         <div class="form-group">
+          <label for="skills">Skills</label>
+          <el-select
+            v-model="formInline.skills"
+            multiple
+            collapse-tags
+            placeholder="Select your skills">
+            <el-option
+              v-for="skill in skillsList"
+              :key="skill.value"
+              :label="skill.label"
+              :value="skill.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id ="password" v-model="formInline.Password" placeholder="Password" required @input="validatePassword">
           <ul class="password-requirements">
@@ -43,24 +58,56 @@
 import axios from 'axios';
 
 export default {
-    data() {
-        return {
-            formInline: {
-                Photo: null,
-                UserName: '',
-                Email: '',
-                Age: 0,
-                Department: '',
-                Password: ''
-            },
-            passwordValidation: {
-                minLength: true,
-                numberOrSymbol: true,
-            },
-            results: '',
-            imageData: null // make sure you have imageData defined if you're using previewImage method
-        };
-    },
+  data() {
+    return {
+      formInline: {
+        username: '',
+        email: '',
+        age: '',
+        department: '',
+        password: '',
+        skills:[],
+      },
+      skillsList: [
+        { value: 'html', label: 'HTML' },
+        { value: 'css', label: 'CSS' },
+        { value: 'javascript', label: 'JavaScript' },
+        { value: 'statistical Analysis', label: 'Statistical Analysis' },
+        { value: 'engineering', label: 'Engineering' },
+        { value: 'marketing', label: 'Marketing' },
+        { value: 'political science', label: 'Political science' },
+        { value: 'biochemistry', label: 'Biochemistry' },
+        { value: 'psychology', label: 'Psychology' },
+        { value: 'programming', label: 'Programming' },
+        { value: 'art', label: 'Art' },
+        { value: 'psychology', label: 'Psychology' },
+        { value: 'machine Learning', label: 'Machine Learning' },
+        { value: 'english', label: 'English' },
+        { value: 'finance', label: 'Finance' },
+        { value: 'python', label: 'Python' },
+        { value: 'astronomy', label: 'Astronomy' },
+        { value: 'management', label: 'Management' },
+        { value: 'cloud Computing', label: 'Cloud Computing' },
+        { value: 'ecology', label: 'Ecology' },
+        { value: 'python', label: 'Python' },
+        { value: 'geology', label: 'Geology' },
+        { value: 'java', label: 'Java' },
+        { value: 'philosophy', label: 'Philosophy' },
+        { value: 'music', label: 'Music' },
+        { value: 'unix', label: 'Unix' },
+        { value: 'c', label: 'C' },
+        { value: 'c++', label: 'C++' },
+        
+        // ... more skills ...
+      ],
+      passwordValidation: {
+        minLength: true,
+        numberOrSymbol: true,
+      },
+      results: '',
+      imageData: null // make sure you have imageData defined if you're using previewImage method
+    };
+  },
     methods: {
         validatePassword() {
             // Directly reference the password from formInline
