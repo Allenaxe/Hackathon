@@ -55,8 +55,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     
     @action(methods = ['get'], detail = False) 
     def printUser(self, request):
-        print(request.user)
-        return Response(Student.objects.get(UserName = User.objects.get(username = request.user)).Photo)
+        return Response(Student.objects.get(UserName = User.objects.get(username = request.user)).Score)
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -318,7 +317,6 @@ def login(request):
     user = auth.authenticate(username=username, password=password)
     if user is not None and user.is_active:
         auth.login(request, user)
-        print(request.user)
         return HttpResponse('ok')
     else:
         return HttpResponse('failed')

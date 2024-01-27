@@ -68,10 +68,10 @@
       <h1 id="WebsiteName">Course recommendation</h1>
       <nav class="header_nav">
           <a href="https://www.google.com.tw/" class="linkText">HOME</a>
-          <a href="/path.vue" class="linkText">LEARNING PATH</a>
-          <a href="" class="linkText">LEARNING COURSE</a>
-          <a href="" class="linkText">LEARNING HISTORY</a>
-          <a href="" class="linkText">LEARNING ACHIEVEMENT</a>
+          <router-link to="/path"><a>LEARNING PATH</a></router-link>
+          <router-link to="/course"><a>LEARNING COURSE</a></router-link>
+          <router-link to="/history"><a>LEARNING HISTORY</a></router-link>
+          <router-link to="/achievement"><a>LEARNING ACHIEVEMENT</a></router-link>
       </nav>
 
   </header>
