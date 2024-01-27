@@ -24,7 +24,7 @@
         <table>
         <tr>
           <td>Email</td>
-          <td>{{formInline.mail}}</td>
+          <td :class="getemail()">{{formInline.mail}}</td>
         </tr>
         <tr>
           <td>department</td>
@@ -70,26 +70,17 @@ export default {
         }
       },
     methods: {
-        
-        onSubmitGet() {
-          console.log('submit! get');
-            axios.get('http://127.0.0.1:8000/users/', this.formInline).then(res => {
-            this.results = JSON.stringify(res.data);
-            console.log(res.data);
-          }).catch(() => {
-            alert('wrong');
-          })
-        },
-        onSubmitPost() {
-          console.log('submit! post');
-            axios.post('http://127.0.0.1:8000/users/', this.formInline).then(res => {
-            console.log(res.data);
-          }).catch(() => {
-            alert('wrong');
-          })
-  
-        }
+      async getemail() {
+        await axios.get('http://127.0.0.1:8000/students/getemail')
+        .then(res => {
+          this.formInline.mail = res.data;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred');
+        });
       }
+    }
 }
 </script>
 
@@ -191,17 +182,6 @@ a {
   background-color:  #FFB500;
   margin: 0;
 }
-/*
-.input {
-  width: 300px;
-}
-button {
-  width: 100px
-}
-.textarea {
-  width: 900px
-}
-*/
 #Inform {
   padding-top: 10px;
 }

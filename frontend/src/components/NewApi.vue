@@ -73,13 +73,13 @@ default {
     },
     async getstar() {
       await axios.get('http://127.0.0.1:8000/students/printUser')
-        .then(res => {
-            this.results = res.data.Score;
-            console.log(res.data.Score);
-          })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('An error occurred');
+      .then(res => {
+          this.results = res.data.Score;
+          console.log(res.data.Score);
+        })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
       });
       return this.results;
     },
