@@ -55,6 +55,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     
     @action(methods = ['get'], detail = False) 
     def printUser(self, request):
+        print(request.user)
         return Response(Student.objects.get(UserName = User.objects.get(username = request.user)).Photo)
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -307,5 +308,18 @@ class CourseViewSet(viewsets.ModelViewSet):
         # print(response_text)
         return Response(response_text)
 
-    
+@csrf_exempt
+def login(request):
+    if request.user.is_authenticated:
+        return HttpResponse('ok')
+    data = json.loads(request.body)
+    username = data['username']
+    password = data['password']
+    user = auth.authenticate(username=username, password=password)
+    if user is not None and user.is_active:
+        auth.login(request, user)
+        print(request.user)
+        return HttpResponse('ok')
+    else:
+        return HttpResponse('failed')
     
