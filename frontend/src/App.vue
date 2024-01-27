@@ -1,13 +1,26 @@
 <template>
+<<<<<<< Updated upstream
   <router-view />
+=======
+   <button v-if="$route.path !== '/login' && $route.path !== '/register'" @click="goToAboutPage">About Us</button>
+  <router-view></router-view>
+>>>>>>> Stashed changes
 </template>
 
 <script>
 
 export default {
   name: 'App',
+<<<<<<< Updated upstream
   components: {
   }
+=======
+  methods: {
+    goToAboutPage() {
+      this.$router.push("/login");
+    },
+  },
+>>>>>>> Stashed changes
 }
 </script>
 
@@ -18,6 +31,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
